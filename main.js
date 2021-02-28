@@ -18,6 +18,12 @@ t((ar) => {
 
   const conte = document.getElementById("container");
 
+  //Titulo
+  var tit = document.createElement("h1");
+  var w = document.createTextNode("Events");
+  tit.appendChild(w);
+  conte.appendChild(tit);
+
   //Primero creemos la tabla
   var tbl = document.createElement("table");
   tbl.style.width = "100%";
@@ -136,7 +142,14 @@ t((ar) => {
     return second[1] - first[1];
   });
 
+  //Titulo
+  var tit = document.createElement("h1");
+  var w = document.createTextNode("Correlations");
+  tit.appendChild(w);
+  conte.appendChild(tit);
+
   //TABLA CON CÁLCULO
+
   var tbl = document.createElement("table");
   tbl.style.width = "100%";
   tbl.setAttribute("class", "table table-hover");
@@ -186,5 +199,6 @@ t((ar) => {
   }
 
   tbl.append(tbdy);
+  tbl.style.tableLayout = "fixed";
   conte.append(tbl);
 });
