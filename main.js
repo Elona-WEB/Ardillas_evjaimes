@@ -13,6 +13,9 @@ const t = (callback) => {
 
 //Vamos a hacer marranadas y los metemos al dom
 t((ar) => {
+  let dict = {};
+  const keys = [];
+
   const conte = document.getElementById("container");
 
   //Primero creemos la tabla
@@ -50,6 +53,24 @@ t((ar) => {
     celda.appendChild(num);
     hilera.appendChild(celda);
 
+    //AQUI ME HAGO MI MATRIZ
+    for (let z = 0; z < ar[k].events.length; z++) {
+      let u = ar[k].events[z];
+      if (dict[u] == null) {
+        let h = new Object();
+        h["TP"] = 0;
+        h["FN"] = 0;
+        h["TN"] = 0;
+        h["FP"] = 0;
+        dict[u] = h;
+        keys.push(u);
+      }
+      if (ar[k].squirrel == true) {
+        dict[u]["TP"] += 1;
+      } else {
+        dict[u]["FN"] += 1;
+      }
+    }
     var eventos = ar[k].events.join();
     var celda = document.createElement("td");
     var uno = document.createTextNode(eventos);
@@ -70,4 +91,25 @@ t((ar) => {
   }
   tbl.append(tbdy);
   conte.append(tbl);
+
+  //SEGUNDA PARTE
+
+  for (let i = 0; i < ar.length; i++) {
+    let check = ar[i];
+    let rev = keys;
+    rev = rev.filter(function (val) {
+      return check.events.indexOf(val.toString()) == -1;
+    });
+
+    for (let r = 0; r < rev.length; r++) {
+      let a = rev[r];
+      if (check.squirrel == true) {
+        dict[a]["FP"] += 1;
+      } else {
+        dict[a]["TN"] += 1;
+      }
+    }
+  }
+
+  console.log(dict);
 });
