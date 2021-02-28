@@ -62,6 +62,7 @@ t((ar) => {
         h["FN"] = 0;
         h["TN"] = 0;
         h["FP"] = 0;
+        h["COR"] = 0;
         dict[u] = h;
         keys.push(u);
       }
@@ -111,8 +112,31 @@ t((ar) => {
     }
   }
 
-  //TABLA CON CÁLCULO
+  //CALCULO CORREC
+  for (let m = 0; m < keys.length; m++) {
+    let i = dict[keys[m]];
+    let tp = i["TP"];
+    let tn = i["TN"];
+    let fp = i["FP"];
+    let fn = i["FN"];
+    let arriba = tp * tn - fp * fn;
+    let abajo = (tp + fp) * (tp + fn) * (tn + fp) * (tn + fn);
+    let raiz = Math.sqrt(abajo);
+    let corec = arriba / raiz;
+    i["COR"] = corec;
+  }
 
+  //ORDENO
+
+  var items = Object.keys(dict).map(function (key) {
+    return [key, dict[key]["COR"]];
+  });
+
+  items.sort(function (first, second) {
+    return second[1] - first[1];
+  });
+
+  //TABLA CON CÁLCULO
   var tbl = document.createElement("table");
   tbl.style.width = "100%";
   tbl.setAttribute("class", "table table-hover");
@@ -146,29 +170,21 @@ t((ar) => {
     celda.appendChild(num);
     hilera.appendChild(celda);
 
-    var element = keys[m];
+    var element = items[m][0];
     var celda = document.createElement("td");
     var dos = document.createTextNode(element);
     celda.appendChild(dos);
     hilera.appendChild(celda);
 
-    let i = dict[keys[m]];
-    let tp = i["TP"];
-    let tn = i["TN"];
-    let fp = i["FP"];
-    let fn = i["FN"];
-    let arriba = tp * tn - fp * fn;
-    let abajo = (tp + fp) * (tp + fn) * (tn + fp) * (tn + fn);
-    let raiz = Math.sqrt(abajo);
-    let corec = arriba / raiz;
-
+    var e2 = items[m][1];
     var celda = document.createElement("td");
-    var dos = document.createTextNode(corec);
+    var dos = document.createTextNode(e2);
     celda.appendChild(dos);
     hilera.appendChild(celda);
 
     tbdy.appendChild(hilera);
   }
+
   tbl.append(tbdy);
   conte.append(tbl);
 });
