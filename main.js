@@ -111,5 +111,64 @@ t((ar) => {
     }
   }
 
-  console.log(dict);
+  //TABLA CON CÁLCULO
+
+  var tbl = document.createElement("table");
+  tbl.style.width = "100%";
+  tbl.setAttribute("class", "table table-hover");
+
+  var primera = document.createElement("tr");
+
+  var thead1 = document.createElement("th");
+  var l = document.createTextNode("#");
+  thead1.appendChild(l);
+  var thead2 = document.createElement("th");
+  var n = document.createTextNode("Event");
+  thead2.appendChild(n);
+
+  var thead3 = document.createElement("th");
+  var o = document.createTextNode("Correlation");
+  thead3.appendChild(o);
+
+  primera.appendChild(thead1);
+  primera.appendChild(thead2);
+  primera.appendChild(thead3);
+
+  tbl.appendChild(primera);
+
+  var tbdy = document.createElement("tbody");
+
+  for (let m = 0; m < keys.length; m++) {
+    var hilera = document.createElement("tr");
+
+    var celda = document.createElement("td");
+    var num = document.createTextNode(m + 1);
+    celda.appendChild(num);
+    hilera.appendChild(celda);
+
+    var element = keys[m];
+    var celda = document.createElement("td");
+    var dos = document.createTextNode(element);
+    celda.appendChild(dos);
+    hilera.appendChild(celda);
+
+    let i = dict[keys[m]];
+    let tp = i["TP"];
+    let tn = i["TN"];
+    let fp = i["FP"];
+    let fn = i["FN"];
+    let arriba = tp * tn - fp * fn;
+    let abajo = (tp + fp) * (tp + fn) * (tn + fp) * (tn + fn);
+    let raiz = Math.sqrt(abajo);
+    let corec = arriba / raiz;
+
+    var celda = document.createElement("td");
+    var dos = document.createTextNode(corec);
+    celda.appendChild(dos);
+    hilera.appendChild(celda);
+
+    tbdy.appendChild(hilera);
+  }
+  tbl.append(tbdy);
+  conte.append(tbl);
 });
